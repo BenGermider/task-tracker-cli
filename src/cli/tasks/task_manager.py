@@ -1,10 +1,9 @@
 import json
 import threading
-from queue import Queue
 
 from src.cli.command import Command
+from src.cli.structs.consts import JSON_DATABASE_PATH
 from src.cli.tasks.task import Task
-from asyncio import run
 
 class TaskManager:
 
@@ -19,7 +18,7 @@ class TaskManager:
             "mark-todo": None,
             "mark-done": None,
             "update": None,
-            "delete": None
+            "delete": self.delete_task
         }
 
     def run(self) -> None:
@@ -34,21 +33,36 @@ class TaskManager:
 
     @staticmethod
     def add_task(task_desc: list[str]):
-        file_path = "src/database/json_database.json"
+        file_path = JSON_DATABASE_PATH
         task = Task(*task_desc)
 
-        # Step 1: Read file safely
         try:
             with open(file_path, "r") as file:
                 data = json.load(file)
         except (FileNotFoundError, json.JSONDecodeError):
             data = {"tasks": []}
 
-        # Step 2: Append new task
         data["tasks"].append(task.__dict__)
 
-        # Step 3: Write entire structure back to file
         with open(file_path, "w") as file:
             json.dump(data, file, indent=4)
 
         print(f"Task id {task.task_id} added successfully")
+        return True
+
+    @staticmethod
+    def delete_task(task_id: int):
+        task_id, = task_id
+        file_path = JSON_DATABASE_PATH
+        try:
+            with open(file_path, "r") as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return False
+
+        data["tasks"] = [task for task in data["tasks"] if task["task_id"] != int(task_id)]
+
+        with open(file_path, "w") as file:
+            json.dump(data, file, indent=4)
+
+

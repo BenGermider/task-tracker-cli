@@ -1,0 +1,1 @@
+JSON_DATABASE_PATH = "src/database/json_database.json"

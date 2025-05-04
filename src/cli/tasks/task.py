@@ -10,6 +10,7 @@ class Task(object):
         self.status = status
         self.created_at = datetime.now().isoformat()
         self.updated_at = datetime.now().isoformat()
+        self.task_id = Task.task_id
         Task.task_id += 1
 
     async def update(self, status) -> None:

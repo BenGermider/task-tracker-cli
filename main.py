@@ -10,7 +10,6 @@ if __name__ == '__main__':
     while True:
         try:
             r = shlex.split(input(">"))
-            print(r)
             q.put(r)
         except (EOFError, KeyboardInterrupt):
             print("\nGoodbye!")
@@ -18,7 +17,6 @@ if __name__ == '__main__':
 
         if not r:
             continue
-        print(r)
 
 
 
