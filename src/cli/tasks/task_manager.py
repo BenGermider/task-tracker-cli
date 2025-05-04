@@ -2,8 +2,7 @@ import json
 import threading
 from queue import Queue
 
-from aiohttp.web_routedef import static
-
+from src.cli.command import Command
 from src.cli.tasks.task import Task
 from asyncio import run
 
@@ -27,16 +26,16 @@ class TaskManager:
         while self._running:
             data = self.q.get()
             # TODO: ADD DATA VALIDATION
-            new_task = Task(data[0], data[1])
-            self._mapping[new_task.description](new_task)
-            # await self.response()
+            new_command = Command(data[0], data[1:])
+            self._mapping[new_command.command](new_command.args)
 
     def stop(self) -> None:
         self._running = False
 
     @staticmethod
-    def add_task(task: Task):
+    def add_task(task_desc: list[str]):
         file_path = "src/database/json_database.json"
+        task = Task(*task_desc)
 
         # Step 1: Read file safely
         try:

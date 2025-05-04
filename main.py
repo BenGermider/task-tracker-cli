@@ -1,3 +1,4 @@
+import shlex
 import queue
 
 from src.cli.tasks.task_manager import TaskManager
@@ -8,7 +9,8 @@ if __name__ == '__main__':
 
     while True:
         try:
-            r = input(">").split()
+            r = shlex.split(input(">"))
+            print(r)
             q.put(r)
         except (EOFError, KeyboardInterrupt):
             print("\nGoodbye!")

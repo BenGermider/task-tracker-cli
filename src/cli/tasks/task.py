@@ -5,10 +5,9 @@ class Task(object):
 
     task_id = 0
 
-    def __init__(self, description: str, *args, status: str = "TODO"):
+    def __init__(self, description: str,  status: str = "TODO"):
         self.description = description
         self.status = status
-        self.args = args
         self.created_at = datetime.now().isoformat()
         self.updated_at = datetime.now().isoformat()
         Task.task_id += 1
