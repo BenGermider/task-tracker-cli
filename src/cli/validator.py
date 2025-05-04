@@ -1,6 +1,6 @@
 from typing import Tuple
 
-# from structs.commands import COMMANDS
+# from utils.commands import COMMANDS
 #
 # class Validator(object):
 #

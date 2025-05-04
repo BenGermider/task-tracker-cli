@@ -3,14 +3,14 @@ import threading
 from datetime import datetime
 
 from src.cli.command import Command
-from src.cli.structs.consts import JSON_DATABASE_PATH
+from src.cli.utils.consts import JSON_DATABASE_PATH
 from src.cli.tasks.task import Task
+from src.cli.utils.paths import get_path
+
 
 class TaskManager:
 
-    def __init__(self, i_queue):
-        self.q = i_queue
-        self._running = True
+    def __init__(self, ):
         self._mapping = {
             "add": self.add_task,
             "list": self.show_filter,
@@ -20,28 +20,19 @@ class TaskManager:
             "update": self.update_task,
             "delete": self.delete_task
         }
-        threading.Thread(target=self.run).start()
 
-    def run(self) -> None:
+    def run(self, args) -> None:
         """
         Consumer of user input
         :return:
         """
-        while self._running:
-            data = self.q.get()
-            # TODO: ADD DATA VALIDATION
-            new_command = Command(data[0], data[1:])
-            if "mark" in new_command.command:
-                self.status_change(new_command)
-            else:
-                self._mapping[new_command.command](new_command.args)
+        # TODO: ADD DATA VALIDATION
+        new_command = Command(args[0], args[1:])
+        if "mark" in new_command.command:
+            self.status_change(new_command)
+        else:
+            self._mapping[new_command.command](new_command.args)
 
-    def stop(self) -> None:
-        """
-        Stops consuming
-        :return:
-        """
-        self._running = False
 
     @staticmethod
     def show_filter(task_filter=None):
@@ -60,7 +51,6 @@ class TaskManager:
             data_to_show = [task for task in data["tasks"] if data["tasks"]["status"] == task_filter]
         else:
             data_to_show = data["tasks"]
-        print(data_to_show)
 
     @staticmethod
     def status_change(command: Command) -> None:
@@ -117,7 +107,7 @@ class TaskManager:
         :param task_desc:
         :return:
         """
-        file_path = JSON_DATABASE_PATH
+        file_path = get_path("../..", "database", "json_database.json")
         task = Task(*task_desc)
 
         try:
