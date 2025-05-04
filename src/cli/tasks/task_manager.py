@@ -11,7 +11,6 @@ class TaskManager:
     def __init__(self, i_queue):
         self.q = i_queue
         self._running = True
-        threading.Thread(target=self.run).start()
         self._mapping = {
             "add": self.add_task,
             "list": self.show_filter,
@@ -21,8 +20,13 @@ class TaskManager:
             "update": self.update_task,
             "delete": self.delete_task
         }
+        threading.Thread(target=self.run).start()
 
     def run(self) -> None:
+        """
+        Consumer of user input
+        :return:
+        """
         while self._running:
             data = self.q.get()
             # TODO: ADD DATA VALIDATION
@@ -33,10 +37,19 @@ class TaskManager:
                 self._mapping[new_command.command](new_command.args)
 
     def stop(self) -> None:
+        """
+        Stops consuming
+        :return:
+        """
         self._running = False
 
     @staticmethod
     def show_filter(task_filter=None):
+        """
+        Filtering user's tasks according to desired filter
+        :param task_filter:
+        :return:
+        """
         try:
             with open(JSON_DATABASE_PATH, "r") as f:
                 data = json.load(f)
@@ -51,6 +64,11 @@ class TaskManager:
 
     @staticmethod
     def status_change(command: Command) -> None:
+        """
+        Updating status of task
+        :param command:
+        :return:
+        """
         new_status = command.command.split("-", 1)[1]
         task_id, = command.args
         try:
@@ -70,6 +88,11 @@ class TaskManager:
 
     @staticmethod
     def update_task(command: list) -> None:
+        """
+        Name change of task
+        :param command:
+        :return:
+        """
         task_id, new_name = command
         file_path = JSON_DATABASE_PATH
         try:
@@ -89,6 +112,11 @@ class TaskManager:
 
     @staticmethod
     def add_task(task_desc: list[str]):
+        """
+        Add task to DB
+        :param task_desc:
+        :return:
+        """
         file_path = JSON_DATABASE_PATH
         task = Task(*task_desc)
 
@@ -113,6 +141,11 @@ class TaskManager:
 
     @staticmethod
     def delete_task(task_id: int) -> bool:
+        """
+        Delete task from DB
+        :param task_id:
+        :return:
+        """
         task_id, = task_id
         file_path = JSON_DATABASE_PATH
         try:
