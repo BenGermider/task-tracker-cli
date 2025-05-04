@@ -11,7 +11,7 @@ class Command(object):
         # self._validator = Validator()
 
     def __str__(self):
-        return f"Command {self.command} with args {self.args} | ID: {self._id}"
+        return f"Command {self.command} with args {self.args} "
 
     # async def validate(self) -> bool:
     #     if not self._validator.validate(self._command, self._args):

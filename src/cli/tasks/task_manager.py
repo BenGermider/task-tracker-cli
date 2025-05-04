@@ -27,7 +27,10 @@ class TaskManager:
             data = self.q.get()
             # TODO: ADD DATA VALIDATION
             new_command = Command(data[0], data[1:])
-            self._mapping[new_command.command](new_command.args)
+            if "mark" in new_command.command:
+                self.status_change(new_command)
+            else:
+                self._mapping[new_command.command](new_command.args)
 
     def stop(self) -> None:
         self._running = False
@@ -46,10 +49,24 @@ class TaskManager:
             data_to_show = data["tasks"]
         print(data_to_show)
 
-
     @staticmethod
     def status_change(command: Command) -> None:
-        pass
+        new_status = command.command.split("-", 1)[1]
+        task_id, = command.args
+        try:
+            with open(JSON_DATABASE_PATH, "r") as f:
+                data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return
+
+        for tasks in data["tasks"]:
+            if tasks["task_id"] == int(task_id):
+                tasks["status"] = new_status
+                tasks["updated_at"] = datetime.now().isoformat()
+
+        with open(JSON_DATABASE_PATH, "w") as f:
+            json.dump(data, f, indent=4)
+
 
     @staticmethod
     def update_task(command: list) -> None:

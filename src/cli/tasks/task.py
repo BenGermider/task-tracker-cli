@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Task(object):
 
-    task_id = 0
+    task_id = 1
 
     def __init__(self, description: str,  status: str = "TODO"):
         self.description = description
