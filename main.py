@@ -1,23 +1,13 @@
-import shlex
-import queue
+import sys
 
 from src.cli.tasks.task_manager import TaskManager
 
 if __name__ == '__main__':
-    q = queue.Queue()
-    task_manager = TaskManager(q)
 
-    while True:
-        try:
-            r = shlex.split(input(">"))
-            q.put(r)
-        except (EOFError, KeyboardInterrupt):
-            print("\nGoodbye!")
-            break
+    args = sys.argv[1:]
+    if not args:
+        print("Please enter input")
+        sys.exit(1)
 
-        if not r:
-            continue
-
-
-
-
+    tm = TaskManager()
+    tm.run(args)
