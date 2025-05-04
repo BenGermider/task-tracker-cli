@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from src.cli.utils.paths import get_path
+from src.cli.utils.times import get_time
 
 
 class Task(object):
@@ -9,8 +10,8 @@ class Task(object):
     def __init__(self, description: str,  status: str = "todo"):
         self.description = description
         self.status = status
-        self.created_at = datetime.now().isoformat()
-        self.updated_at = datetime.now().isoformat()
+        self.created_at = get_time()
+        self.updated_at = get_time()
         self.task_id = self.task_count()
 
     @staticmethod
