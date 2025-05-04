@@ -1,4 +1,8 @@
+import json
 import threading
+from queue import Queue
+
+from aiohttp.web_routedef import static
 
 from src.cli.tasks.task import Task
 from asyncio import run
@@ -9,21 +13,43 @@ class TaskManager:
         self.q = i_queue
         self._running = True
         threading.Thread(target=self.run).start()
+        self._mapping = {
+            "add": self.add_task,
+            "list": None,
+            "mark-in-progress": None,
+            "mark-todo": None,
+            "mark-done": None,
+            "update": None,
+            "delete": None
+        }
 
     def run(self) -> None:
         while self._running:
             data = self.q.get()
-            print(f"got {data}")
             # TODO: ADD DATA VALIDATION
             new_task = Task(data[0], data[1])
-            print(new_task)
+            self._mapping[new_task.description](new_task)
             # await self.response()
 
     def stop(self) -> None:
         self._running = False
 
-    # async def response(self) -> None:
-    #     raise NotImplementedError
+    @staticmethod
+    def add_task(task: Task):
+        file_path = "src/database/json_database.json"
 
+        # Step 1: Read file safely
+        try:
+            with open(file_path, "r") as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {"tasks": []}
 
+        # Step 2: Append new task
+        data["tasks"].append(task.__dict__)
 
+        # Step 3: Write entire structure back to file
+        with open(file_path, "w") as file:
+            json.dump(data, file, indent=4)
+
+        print(f"Task id {task.task_id} added successfully")
