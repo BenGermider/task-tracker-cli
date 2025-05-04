@@ -34,7 +34,7 @@ class TaskManager:
             self._mapping[new_command.command](new_command.args)
 
 
-    def show_filter(self, task_filter=None):
+    def show_filter(self, task_filter):
         """
         Filtering user's tasks according to desired filter
         :param task_filter:
@@ -46,8 +46,9 @@ class TaskManager:
         except (FileNotFoundError, json.JSONDecodeError):
             return
 
-        if not task_filter:
-            data_to_show = [task for task in data["tasks"] if data["tasks"]["status"] == task_filter]
+        if task_filter:
+            task_filter, = task_filter
+            data_to_show = [task for task in data["tasks"] if task["status"] == task_filter]
         else:
             data_to_show = data["tasks"]
         print(data_to_show)
@@ -58,7 +59,6 @@ class TaskManager:
         :param command:
         :return:
         """
-        json_database_path = get_path()
         new_status = command.command.split("-", 1)[1]
         task_id, = command.args
         try:

@@ -6,7 +6,7 @@ from src.cli.utils.paths import get_path
 
 class Task(object):
 
-    def __init__(self, description: str,  status: str = "TODO"):
+    def __init__(self, description: str,  status: str = "todo"):
         self.description = description
         self.status = status
         self.created_at = datetime.now().isoformat()
