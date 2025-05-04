@@ -16,6 +16,10 @@ class Task(object):
 
     @staticmethod
     def task_count():
+        """
+        Gets and increases task count by 1
+        :return:
+        """
         path = get_path("../..", "database", "task_counter")
         with open(path, "r") as f:
             count = int(f.read())

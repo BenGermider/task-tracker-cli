@@ -36,6 +36,11 @@ class TaskManager:
             self._mapping[new_command.command](new_command.args)
 
     def reset(self, *args):
+        """
+        Resets DBs
+        :param args:
+        :return:
+        """
         with open(self.database, "w") as f:
             pass
         with open(get_path("../..", "database", "task_counter"), "w") as f:

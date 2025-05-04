@@ -1,9 +1,14 @@
 from rich.console import Console
 from rich.table import Table
 
-def display_tasks(tasks):
+def display_tasks(tasks) -> None:
+    """
+    Prints to CMD the tasks as a table, neat and colorful.
+    :param tasks: tasks to print, possibly filtered.
+    :return:
+    """
     console = Console()
-    table = Table(title="📝 Task List")
+    table = Table(title="Task List")
 
     table.add_column("ID", style="cyan", justify="right")
     table.add_column("Description", style="magenta")
