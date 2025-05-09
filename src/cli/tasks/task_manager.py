@@ -3,6 +3,7 @@ from datetime import datetime
 
 from src.cli.command import Command
 from src.cli.tasks.task import Task
+from src.cli.utils.consts import UPDATE_WHITELIST
 from src.cli.utils.display import display_tasks
 from src.cli.utils.paths import get_path
 from src.cli.utils.times import get_time
@@ -73,6 +74,8 @@ class TaskManager:
         """
         new_status = command.command.split("-", 1)[1]
         task_id, = command.args
+        if new_status not in UPDATE_WHITELIST:
+            raise KeyError("Unexpected status")
         try:
             with open(self.database, "r") as f:
                 data = json.load(f)

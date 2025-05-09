@@ -1,7 +1,5 @@
 from typing import Tuple
 
-# from src.cli.validator import Validator
-
 
 class Command(object):
 

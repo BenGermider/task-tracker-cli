@@ -172,3 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Private Databases
+src/database/json_database.json
+src/database/task_counter
