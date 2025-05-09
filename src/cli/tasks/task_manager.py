@@ -43,7 +43,9 @@ class TaskManager:
         :return:
         """
         with open(self.database, "w") as f:
-            pass
+            s = f.read()
+            if not s:
+                f.write("0")
         with open(get_path("../..", "database", "task_counter"), "w") as f:
             f.write("0")
 
