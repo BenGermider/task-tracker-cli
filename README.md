@@ -3,7 +3,7 @@
 Self-built CLI to add, monitor, and get information about tasks.
 
 
-### Prequisites
+### Prerequisites
 
 - Requirements installations. In project directory, run the following line:
 ```bash
