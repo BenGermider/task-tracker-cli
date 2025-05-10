@@ -3,7 +3,7 @@
 Self-built CLI to add, monitor, and get information about tasks.
 
 
-### Prequisites
+### Prerequisites
 
 - Requirements installations. In project directory, run the following line:
 ```bash
@@ -31,3 +31,7 @@ Update path. This is a little bit complicated, must do in the following order.
 ### Future Additions:
 - Tests
 - Validation and security
+
+## Project URL
+https://roadmap.sh/projects/task-tracker
+
