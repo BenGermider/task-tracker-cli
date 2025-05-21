@@ -174,5 +174,5 @@ cython_debug/
 .pypirc
 
 # Private Databases
-src/database/json_database.json
-src/database/task_counter
+#src/database/json_database.json
+#src/database/task_metadata.json
